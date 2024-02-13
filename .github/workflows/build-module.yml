@@ -16,7 +16,7 @@ jobs:
         build_env:
           - pkgarch: mips_24kc
             target: ath79
-            subtarget: nand
+            subtarget: generic
           # - pkgarch: mipsel_24kc
           #   target: ramips
           #   subtarget: mt7620
