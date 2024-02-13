@@ -76,12 +76,12 @@ jobs:
           echo "CONFIG_PACKAGE_kmod-crypto-lib-chacha20poly1305=m" >> .config
           echo "CONFIG_PACKAGE_kmod-crypto-chacha20poly1305=m" >> .config
 
-          make defconfig
+          make defconfig FORCE=1
 
           echo "    > make tools/install"
-          make tools/install -i -j `nproc`
+          make tools/install -i -j `nproc` FORCE=1
           echo "    > make toolchain/install"
-          make toolchain/install  -i -j `nproc`
+          make toolchain/install  -i -j `nproc` FORCE=1
           # compile kernel module
           echo "    > make target/linux/compile"
           make target/linux/compile  -i -j `nproc` V=s FORCE=1
@@ -103,22 +103,22 @@ jobs:
           echo "CONFIG_PACKAGE_kmod-amneziawg=m" >> .config
           echo "CONFIG_PACKAGE_amneziawg-tools=y" >> .config
           echo "CONFIG_PACKAGE_luci-app-amneziawg=y" >> .config
-          make defconfig
+          make defconfig FORCE=1
 
       - name: Build amneziawg-tools
         run: |
-          make V=s package/amneziawg-tools/{clean,download,prepare}
-          make V=s package/amneziawg-tools/compile
+          make V=s package/amneziawg-tools/{clean,download,prepare} FORCE=1
+          make V=s package/amneziawg-tools/compile FORCE=1
 
       - name: Build kmod-amneziawg
         run: |
-          make package/kmod-amneziawg/{clean,download,prepare}
-          make package/kmod-amneziawg/compile
+          make package/kmod-amneziawg/{clean,download,prepare} FORCE=1
+          make package/kmod-amneziawg/compile FORCE=1
 
       - name: Build luci
         run: |
-          make package/luci-app-amneziawg/{clean,download,prepare}
-          make package/luci-app-amneziawg/compile V=s
+          make package/luci-app-amneziawg/{clean,download,prepare} FORCE=1
+          make package/luci-app-amneziawg/compile V=s FORCE=1
 
       - name: Prepare artifacts
         run: |
