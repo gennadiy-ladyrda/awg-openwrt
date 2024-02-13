@@ -11,8 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        #tag: ['v23.05.0', 'v23.05.2', 'v22.03.4']
-        tag: ['v19.07.8']
+        #tag: ['v23.05.0', 'v23.05.2', 'v22.03.4', [v19.07.8]]
+        tag: ['v22.03.4']
         build_env:
           - pkgarch: mips_24kc
             target: ath79
@@ -75,6 +75,7 @@ jobs:
           echo "CONFIG_PACKAGE_kmod-crypto-lib-chacha20=m" >> .config
           echo "CONFIG_PACKAGE_kmod-crypto-lib-chacha20poly1305=m" >> .config
           echo "CONFIG_PACKAGE_kmod-crypto-chacha20poly1305=m" >> .config
+          echo "FORCE=1" >> .config
 
           make defconfig FORCE=1
 
