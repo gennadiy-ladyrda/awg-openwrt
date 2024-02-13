@@ -76,7 +76,7 @@ jobs:
           echo "CONFIG_PACKAGE_kmod-crypto-lib-chacha20poly1305=m" >> .config
           echo "CONFIG_PACKAGE_kmod-crypto-chacha20poly1305=m" >> .config
 
-          make defconfig FORCE=1
+          make defconfig
 
           echo "    > make tools/install"
           make tools/install -i -j `nproc`
@@ -84,7 +84,7 @@ jobs:
           make toolchain/install  -i -j `nproc`
           # compile kernel module
           echo "    > make target/linux/compile"
-          make target/linux/compile  -i -j `nproc` V=s
+          make target/linux/compile  -i -j `nproc` V=s FORCE=1
 
       - name: Update feeds
         run: |
