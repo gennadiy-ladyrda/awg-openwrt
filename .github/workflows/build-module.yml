@@ -12,6 +12,7 @@ jobs:
     strategy:
       matrix:
         #tag: ['v23.05.0', 'v23.05.2', 'v22.03.4']
+        python-version: [2.7]
         tag: ['v19.07.8']
         build_env:
           - pkgarch: mips_24kc
@@ -31,6 +32,10 @@ jobs:
           #   subtarget: wrt3200acm
 
     steps:
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
       - uses: actions/checkout@v4
         with:
           repository: openwrt/openwrt
