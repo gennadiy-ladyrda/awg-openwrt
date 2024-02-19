@@ -17,6 +17,7 @@ jobs:
           - pkgarch: mips_24kc
             target: ath79
             subtarget: nor
+            python-version: 2.7
           # - pkgarch: mipsel_24kc
           #   target: ramips
           #   subtarget: mt7620
@@ -31,10 +32,10 @@ jobs:
           #   subtarget: wrt3200acm
 
     steps:
-    #   - name: Set up Python
-    #     uses: actions/setup-python@v2
-    #     with:
-    #       python-version: ${{ matrix.python-version }}
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
       - uses: actions/checkout@v4
         with:
           repository: openwrt/openwrt
