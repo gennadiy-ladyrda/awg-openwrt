@@ -35,7 +35,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: ${{ matrix.build_env.python-version }}
       - uses: actions/checkout@v4
         with:
           repository: openwrt/openwrt
