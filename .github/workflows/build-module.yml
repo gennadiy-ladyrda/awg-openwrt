@@ -18,7 +18,7 @@ jobs:
             target: ath79
             subtarget: generic
             release: 1.0
-            python-version: 2.7
+            # python-version: 2.7
           # - pkgarch: mipsel_24kc
           #   target: ramips
           #   subtarget: mt7620
@@ -33,10 +33,14 @@ jobs:
           #   subtarget: wrt3200acm
 
     steps:
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.build_env.python-version }}
+      - name: Set up Python 2.7
+        run: |
+          sudo apt-get update
+          sudo apt-get install python2.7
+          sudo update-alternatives --install /usr/bin/python python /usr/bin/python2.7 1
+      - name: Verify Python 2.7 installation
+        run: python --version
+
       - uses: actions/checkout@v4
         with:
           repository: openwrt/openwrt
