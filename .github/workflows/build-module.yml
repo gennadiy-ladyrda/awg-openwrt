@@ -8,16 +8,17 @@ on: [workflow_dispatch]
 jobs:
   build:
     name: "${{ matrix.tag }} - ${{ matrix.build_env.pkgarch}} :: ${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}} build"
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     strategy:
       matrix:
         #tag: ['v23.05.0', 'v23.05.2', 'v22.03.4', [v19.07.8]]
-        tag: ['v22.03.4']
+        tag: ['v19.07.8']
         build_env:
           - pkgarch: mips_24kc
             target: ath79
-            subtarget: nor
-            # python-version: 2.7
+            subtarget: generic
+            release: 1.0
+            python-version: 2.7
           # - pkgarch: mipsel_24kc
           #   target: ramips
           #   subtarget: mt7620
@@ -32,10 +33,10 @@ jobs:
           #   subtarget: wrt3200acm
 
     steps:
-      # - name: Set up Python
-      #   uses: actions/setup-python@v2
-      #   with:
-      #     python-version: ${{ matrix.build_env.python-version }}
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.build_env.python-version }}
       - uses: actions/checkout@v4
         with:
           repository: openwrt/openwrt
@@ -76,17 +77,16 @@ jobs:
           echo "CONFIG_PACKAGE_kmod-crypto-lib-chacha20=m" >> .config
           echo "CONFIG_PACKAGE_kmod-crypto-lib-chacha20poly1305=m" >> .config
           echo "CONFIG_PACKAGE_kmod-crypto-chacha20poly1305=m" >> .config
-          echo "FORCE=1" >> .config
 
-          make defconfig FORCE=1
+          make defconfig
 
           echo "    > make tools/install"
-          make tools/install -i -j `nproc` FORCE=1
+          make tools/install -i -j `nproc`
           echo "    > make toolchain/install"
-          make toolchain/install  -i -j `nproc` FORCE=1
+          make toolchain/install  -i -j `nproc`
           # compile kernel module
           echo "    > make target/linux/compile"
-          make target/linux/compile  -i -j `nproc` V=s FORCE=1
+          make target/linux/compile  -i -j `nproc` V=s
 
       - name: Update feeds
         run: |
@@ -105,22 +105,22 @@ jobs:
           echo "CONFIG_PACKAGE_kmod-amneziawg=m" >> .config
           echo "CONFIG_PACKAGE_amneziawg-tools=y" >> .config
           echo "CONFIG_PACKAGE_luci-app-amneziawg=y" >> .config
-          make defconfig FORCE=1
+          make defconfig
 
       - name: Build amneziawg-tools
         run: |
-          make V=s package/amneziawg-tools/{clean,download,prepare} FORCE=1
-          make V=s package/amneziawg-tools/compile FORCE=1
+          make V=s package/amneziawg-tools/{clean,download,prepare}
+          make V=s package/amneziawg-tools/compile
 
       - name: Build kmod-amneziawg
         run: |
-          make package/kmod-amneziawg/{clean,download,prepare} FORCE=1
-          make package/kmod-amneziawg/compile FORCE=1
+          make package/kmod-amneziawg/{clean,download,prepare}
+          make package/kmod-amneziawg/compile
 
       - name: Build luci
         run: |
-          make package/luci-app-amneziawg/{clean,download,prepare} FORCE=1
-          make package/luci-app-amneziawg/compile V=s FORCE=1
+          make package/luci-app-amneziawg/{clean,download,prepare} 
+          make package/luci-app-amneziawg/compile V=s
 
       - name: Prepare artifacts
         run: |
@@ -135,6 +135,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: awgrelease/*.ipk
+          tag_name: ${{ matrix.build_env.release}}
 
       - name: Cleanup
         run: |
