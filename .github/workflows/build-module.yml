@@ -99,7 +99,7 @@ jobs:
           rm -rf bin/targets/${{ matrix.build_env.target}}/${{ matrix.build_env.subtarget}}/packages/  || true
 
           cp feeds.conf.default feeds.conf
-          echo "src-git awgopenwrt https://github.com/yury-sannikov/awg-openwrt.git" >> ./feeds.conf
+          echo "src-git awgopenwrt https://github.com/gennadiy-ladyrda/awg-openwrt.git" >> ./feeds.conf
 
           ./scripts/feeds update luci
           ./scripts/feeds install -a -p luci
