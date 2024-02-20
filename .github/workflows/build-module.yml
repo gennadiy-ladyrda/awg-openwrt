@@ -12,12 +12,12 @@ jobs:
     strategy:
       matrix:
         #tag: ['v23.05.0', 'v23.05.2', 'v22.03.4', [v19.07.8]]
-        tag: ['v21.02.1']
+        tag: ['v22.03.4']
         build_env:
           - pkgarch: mips_24kc
             target: ath79
-            subtarget: generic
-            release: 1.0
+            subtarget: nand
+            release: 0.0.1
             # python-version: 2.7
           # - pkgarch: mipsel_24kc
           #   target: ramips
@@ -33,13 +33,13 @@ jobs:
           #   subtarget: wrt3200acm
 
     steps:
-      - name: Set up Python 2.7
-        run: |
-          sudo apt-get update
-          sudo apt-get install python2.7
-          sudo update-alternatives --install /usr/bin/python python /usr/bin/python2.7 1
-      - name: Verify Python 2.7 installation
-        run: python --version
+      # - name: Set up Python 2.7
+      #   run: |
+      #     sudo apt-get update
+      #     sudo apt-get install python2.7
+      #     sudo update-alternatives --install /usr/bin/python python /usr/bin/python2.7 1
+      # - name: Verify Python 2.7 installation
+      #   run: python --version
 
       - uses: actions/checkout@v4
         with:
@@ -83,7 +83,7 @@ jobs:
           echo "CONFIG_PACKAGE_kmod-crypto-chacha20poly1305=m" >> .config
           echo "CONFIG_PACKAGE_kmod-crypto-lib-curve25519=m" >> .config
 
-          # make defconfig
+          make defconfig
 
           echo "    > make tools/install"
           make tools/install -i -j `nproc`
@@ -110,7 +110,7 @@ jobs:
           echo "CONFIG_PACKAGE_kmod-amneziawg=m" >> .config
           echo "CONFIG_PACKAGE_amneziawg-tools=y" >> .config
           echo "CONFIG_PACKAGE_luci-app-amneziawg=y" >> .config
-          # make defconfig
+          make defconfig
 
       - name: Build amneziawg-tools
         run: |
