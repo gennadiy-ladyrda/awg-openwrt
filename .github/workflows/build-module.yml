@@ -16,8 +16,9 @@ jobs:
         build_env:
           - pkgarch: mips_24kc
             target: ath79
-            subtarget: nand
-            release: 0.0.1
+            subtarget: generic
+            # subtarget: nand
+            release: 0.0.2
             # python-version: 2.7
           # - pkgarch: mipsel_24kc
           #   target: ramips
