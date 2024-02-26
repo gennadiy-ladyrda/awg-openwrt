@@ -27,6 +27,7 @@ define Build/Prepare
 	patch -d $(PKG_BUILD_DIR)/ < files/amnezia-sources.patch
 	patch -d $(PKG_BUILD_DIR)/uapi/ < files/amnezia-uapi.patch
 	cp -f src/Makefile $(PKG_BUILD_DIR)
+	echo "EXTRAVERSION = -bcd3946ab03a646ea54610bdb622252d" >> $(PKG_BUILD_DIR)/Makefile
 endef
 
 define Build/Compile
